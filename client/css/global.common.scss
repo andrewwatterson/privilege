@@ -1,0 +1,68 @@
+$darkGreen: #0B3623;
+$green: #22A66F;
+$lightGreen: #C4E6D7;
+$gray5: #666666;
+$gray4: #999999;
+$gray3: #CCCCCC;
+$gray2: #E6E6E6;
+$white: #FFFFFF;
+
+@mixin text-font() {
+	font-family: "adelle", Georgia, sans-serif;
+}
+
+@mixin ui-font() {
+	font-family: "futura-pt", Futura, sans-serif;
+	font-weight: 700;
+}
+
+@mixin flex-parent($justify: space-around, $align: stretch, $direction: column) {
+	display: flex;
+	flex-direction: $direction;
+	justify-content: $justify;
+	align-items: $align;
+	
+	display: -webkit-flex;
+	-webkit-flex-direction: $direction;
+	-webkit-justify-content: $justify;
+	-webkit-align-items: $align;
+}
+
+@mixin flex-child($grow, $shrink, $basis) {
+	flex: $grow $shrink $basis;
+	-webkit-flex: $grow $shrink $basis;
+}
+
+body {
+	@include text-font();
+	margin: 0; padding: 0;
+	background-color: $white;
+	color: $darkGreen;
+	text-align: center;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+// indicators specific to privilege.is
+
+.indicator-dot {
+
+	.gender-male.race-white.variant-1:not(.you) &, &.random-1 { background-image: url('../images/man-white-1.png'); }
+	.gender-male.race-white.variant-2:not(.you) &, &.random-2 { background-image: url('../images/man-white-2.png'); }
+	.gender-male.race-white.variant-3:not(.you) &, &.random-3 { background-image: url('../images/man-white-3.png'); }
+
+	.gender-male.race-nonwhite.variant-1:not(.you) &, &.random-4 { background-image: url('../images/man-of-color-1.png'); }
+	.gender-male.race-nonwhite.variant-2:not(.you) &, &.random-5 { background-image: url('../images/man-of-color-2.png'); }
+	.gender-male.race-nonwhite.variant-3:not(.you) &, &.random-6 { background-image: url('../images/man-of-color-3.png'); }
+
+	.gender-female.race-white.variant-1:not(.you) &, &.random-7 { background-image: url('../images/woman-white-1.png'); }
+	.gender-female.race-white.variant-2:not(.you) &, &.random-8 { background-image: url('../images/woman-white-2.png'); }
+	.gender-female.race-white.variant-3:not(.you) &, &.random-9 { background-image: url('../images/woman-white-3.png'); }
+
+	.gender-female.race-nonwhite.variant-1:not(.you) &, &.random-10 { background-image: url('../images/woman-of-color-1.png'); }
+	.gender-female.race-nonwhite.variant-2:not(.you) &, &.random-11 { background-image: url('../images/woman-of-color-2.png'); }
+	.gender-female.race-nonwhite.variant-3:not(.you) &, &.random-12 { background-image: url('../images/woman-of-color-3.png'); }
+}

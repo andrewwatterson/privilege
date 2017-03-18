@@ -1,0 +1,705 @@
+@import 'HorseRace.common.scss';
+
+.horserace-wrapper {
+	@include flex-parent();
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.main-content {
+	text-align: center;
+	width: 100%;
+	@include flex-child(3, 1, 0%);
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+	z-index: 3;
+	background-color: $questionBase;
+	min-height: 350px;
+
+	@include flex-parent(flex-start);
+}
+
+.counter-wrapper {
+	padding: 25px;
+}
+
+.slides-wrapper {
+	@include flex-parent();
+
+	@include flex-child(1,1,0%);
+	box-sizing: border-box;
+	padding: 25px;
+	min-height: 250px;
+
+	opacity: 0;
+
+	&.transitioning {
+		@include animation(fade-in);
+	}
+
+	&.to-half-fade {
+		@include animation(half-fade-in);
+	}
+
+	&.on {
+		opacity: 1;
+
+		&.transitioning {
+			@include animation(fade-out);
+		}
+	}
+
+	&.on.faded {
+		opacity: .5;
+
+		&.transitioning {
+			@include animation(half-fade-out);
+		}
+	}
+}
+
+.slide {
+	overflow: hidden;
+	box-sizing: border-box;
+	@include flex-parent(center, center);
+  	opacity: 1;
+  	padding: 5px;
+
+  	color: $questionText;
+
+  	h1 {
+		font-size: 40px;
+		margin-bottom: 40px;
+	}
+
+	p {
+		max-width: $presentationWidth;
+		line-height: 2;
+		margin-bottom: 24px;
+		text-align: left;
+		font-size: 14px;
+	}
+
+	.question-text {
+		font-size: 32px;
+		max-width: $presentationWidth;
+		margin: 0 auto;
+		margin-bottom: 35px;
+	}
+}
+
+.button {
+	@include ui-font();
+	border: 1px solid $green;
+	color: $green;
+	text-transform: uppercase;
+	display: inline-block;
+	font-size: 18px;
+	padding: 14px;
+	min-width: 166px;
+	border-radius: 8px;
+	margin-right: 25px;
+	margin-bottom: 15px;
+	cursor: pointer;
+
+	&:hover:not(.on) {
+		background-color: $green;
+		color: $questionBase;
+	}
+
+	.question-answers.locked &:hover:not(.on) {
+		background-color: $questionBase;
+		color: $green;
+	}
+
+	.question-answers.locked & {
+		cursor: default;
+	}
+
+	&.on {
+		// background-color: $green;
+		// color: $white;
+		box-shadow: 0px 0px 0px 2px $green;
+	}
+
+	&:last-of-type { margin-right: 0px; }
+
+	.share-page-cta & {
+		border-width: 3px;
+		font-size: 14px;
+		background-color: rgba($white, .5);
+		padding: 10px 15px;
+		min-width: 0px;
+		margin-bottom: 0px;
+	}
+}
+
+.info-bar {
+	position: absolute;
+	bottom: 0px;
+
+	font-size: 14px;
+	color: $burntYellow;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 20px;
+	line-height: 1.6;
+	opacity: 0;
+	transform: translate(0%, 100%);
+
+	.info-bar-content {
+		display: inline-block;
+		width: auto;
+		border-bottom: 1px dotted $gray4;
+		padding: 8px 2px;
+	}
+
+	.info-bar-arrow {
+		background-color: $questionBase;
+		width: 16px;
+		height: 16px;
+		position: absolute;
+		right: 50%;
+		transform: rotate(45deg);
+		border-right: 1px dotted $gray4;
+		border-bottom: 1px dotted $gray4;
+		margin-top: -9px;
+	}
+
+	&.transitioning {
+		@include animation(info-bar-on);
+	}
+
+	em {
+		color: $darkGreen;
+		font-size: 16px;
+		font-style: normal;
+	}
+
+	&.on {
+		&.transitioning {
+			@include animation(info-bar-off);
+		}
+
+		opacity: 1;
+		transform: translate(0%, 0%);
+	}
+}
+
+.scale-wrapper {
+  	width: 100%;
+	@include flex-child(2,1,0px);
+	opacity: 1;
+
+	transition-property: -webkit-flex opacity;
+  	transition-property: flex opacity;
+  	transition-duration: .5s;
+  	transition-timing-function: ease-in;
+
+  	@include flex-parent();
+
+  	background-color: $resultsBase;
+
+  	&.initial-state {
+		@include flex-child(.0001, 1, 0px);
+		opacity: 0;
+  	}
+
+  	// .results-wrapper {
+  	// 	display: none;
+  	// }
+}
+
+.scale {
+	position: relative;
+	overflow: hidden;
+	background-color: $scaleBase;
+	@include flex-child(1, 0, 0%);
+}
+
+.scale-steps {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	box-sizing: border-box;
+	min-height: (($indicatorMargin + $indicatorMinHeight) * 4) + ($indicatorMargin + $specialIndicatorMinHeight);
+
+	@include flex-parent(flex-start, stretch, row);
+
+	.scale-step {
+		@include flex-child(1,1,0%);
+		display: inline-block;
+		height: 100%;
+		
+		&:not(.bumper) { box-shadow: inset 1px 0px 0px 0px rgba($black,.06); }
+
+		&.baseline { box-shadow: inset 1px 0px 0px 0px rgba($white,1); }
+		
+		// this will be a bumper
+		&:last-of-type { box-shadow: inset 1px 0px 0px 0px rgba($black,.06); }
+	}
+}
+
+/* NESTING THIS SELECTOR WILL BREAK CODE */
+.indicator-bar-wrapper {
+	position: absolute;
+	height: 100%;
+
+	
+	.indicator-bar-fader {
+		position: absolute;
+		top: 0px;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(black, .6);
+		z-index: 1;
+
+		/* DON'T DELETE THIS */
+		&.solid {
+
+		}
+	}
+
+	.indicator-bar {
+		min-height: $indicatorMinHeight;
+		position: absolute;
+		top: 0px;
+
+		height: 100%;
+		min-width: 100%;
+
+		transition-property: transform;
+		transition-duration: .5s;
+		transition-timing-function: linear;
+
+		.positive & {
+			transform-origin: 0% 50%;
+		}
+
+		.negative & {
+			transform-origin: 100% 50%;
+		}
+	}
+
+	.indicator-bio {
+		@include flex-parent(center);
+		height: 100%;
+		position: absolute;
+		left: 100%;
+
+		line-height: 16px;
+		font-size: 12px;
+		text-align: left;
+		white-space: nowrap;
+
+		margin-left: 15px;
+
+		opacity: 0;
+
+		.indicator:hover & {
+			opacity: 1;
+		}
+
+		&.transitioning {
+			@include animation(fade-in);
+		}
+
+		&.on {
+			opacity: 1;
+
+			&.transitioning {
+				@include animation(fade-out);
+			}
+		}
+
+		.negative & { 
+
+		}
+
+		.positive & {
+			left: auto;
+			right: 0px;
+			margin-left: 0px;
+			margin-right: 15px;
+			text-align: right;
+		}
+
+		.name {
+			font-size: 14px;
+			font-weight: bold;
+			display: block;
+			margin-bottom: 3px;
+			opacity: 1;
+		}
+
+		.bio-attributes {
+
+			.attribute {
+				display: inline-block;
+
+				font-size: 11px;
+				text-transform: capitalize;
+
+				transition-property: opacity;
+				transition-duration: .5s;
+				transition-timing-function: linear;
+
+				opacity: 0;
+
+				&.on, &:first-of-type {
+					opacity: 1;
+				}
+
+				&:not(:first-of-type):before {
+					content: '\2022';
+					margin: 0px 4px;
+				}
+			}
+		}
+
+		.you & {  }
+		.color-1 & { color: $color1dark; }
+		.color-2 & { color: $color2dark; }
+		.color-3 & { color: $color3dark; }
+		.color-4 & { color: $color4dark; }
+	}
+
+	.indicator-bar-fader, .indicator-bar {
+		.you & { background-color: $green; }
+		.color-1 & { background-color: $color1; }
+		.color-2 & { background-color: $color2; }
+		.color-3 & { background-color: $color3; }
+		.color-4 & { background-color: $color4; }
+	}
+}
+
+.indicators {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+
+	&.mobile { display: none; }
+	&.desktop { @include flex-parent(); }
+
+	.indicator {
+
+		@include flex-child(1,1,0%);
+		opacity: 1;
+		position: relative;
+		overflow: hidden; // this is the frame
+
+		transition-property: -webkit-flex, opacity;
+  		transition-property: flex, opacity;
+  		transition-timing-function: ease-in;
+
+		&.initial-state {
+			@include flex-child(.0001,1,0%);
+			opacity: 0;
+		}
+
+		.indicator-dot-wrapper {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			transition-property: transform;
+			transition-duration: .5s;
+			transition-timing-function: linear;
+			z-index: 3;
+		}
+
+		&.you {
+
+			&.on {
+				@include flex-child(2,1,0%);
+			}
+
+			min-height: $specialIndicatorMinHeight;
+		}
+	}
+}
+
+
+.indicator-dot {
+	@include indicator-dot($indicatorMinHeight);
+	cursor: pointer;
+
+	.you & {
+		background-color: $white;
+		color: $green;
+		cursor: default;
+		box-shadow: inset 0px 0px 0px 2px $green;
+
+		&:after {
+			content: "YOU";
+			line-height: $specialIndicatorMinHeight;
+			@include ui-font();
+		}
+	}
+
+	.avatar & {
+		@include indicator-dot(72px);
+		cursor: default;
+	}
+
+	.mobile .avatar & {
+		@include indicator-dot(120px);
+		cursor: default;	
+	}
+
+	.indicator.you &, &.you {
+		@include indicator-dot($specialIndicatorMinHeight);
+	}
+
+	.color-1 & { background-color: $color1light; }
+	.color-2 & { background-color: $color2light; }
+	.color-3 & { background-color: $color3light; }
+	.color-4 & { background-color: $color4light; }
+
+}
+
+/**********************************/
+/*        RESULTS SCREEN          */
+/**********************************/
+
+.results-display {
+	
+	//
+	// RESET EVERYTHING ELSE 
+	//
+
+	&.horserace-wrapper {
+		height: auto;
+		max-height: none;
+	}
+
+	.main-content {
+		@include remove-flex();
+		min-height: 30px;
+		overflow: visible; // so the about box can show
+	}
+
+	.slides-wrapper, .counter-wrapper, .info-bar { display: none; }
+
+	.scale { display: none; }
+
+	.bottom-content {
+		@include flex-parent(flex-start); // dock everything to the top
+	}
+
+	.about-box { box-shadow: 0px 1px 10px 0px rgba(0,0,0,.2); }
+
+	// END RESET
+
+	.bottom-content {
+		padding: 0px 65px;
+		box-sizing: border-box;
+	}
+
+	.results-wrapper {
+		display: block;
+		margin-bottom: 70px;
+	}
+
+	.results-row {
+		@include flex-parent(flex-start, stretch, row);
+		width: 100%;
+		font-size: 20px;
+
+		.results-row-question, .results-row-result {
+			border-bottom: 1px solid $gray4;
+			padding: 25px;
+			min-height: 50px;
+		}
+
+		&:last-of-type { 
+			.results-row-question, .results-row-result {
+				border-bottom: none;
+			}
+		}
+
+		.results-row-question {
+			@include flex-parent();
+			
+			@include flex-child(4,1,0%);
+			text-align: right;
+			color: $gray5;
+			padding-right: 25px;
+		}
+
+		.results-row-result {
+			@include flex-parent(space-around, center);
+
+			@include flex-child(1,1,0%);
+
+			&.you, &.shared { background-color: rgba($green, .1); color: $darkGreen; }
+			&.color-1 { background-color: rgba($color1, .1); color: $color1dark; }
+			&.color-2 { background-color: rgba($color2, .1); color: $color2dark; }
+			&.color-3 { background-color: rgba($color3, .1); color: $color3dark; }
+			&.color-4 { background-color: rgba($color4, .1); color: $color4dark; }
+			&.share-page-cta { background-color: rgba($white, .4); color: $darkGreen; }
+		}
+	
+		&.characters {
+			font-size: 12px;
+
+			.indicator-dot { margin-bottom: 12px; }
+
+			.character-name { font-size: 16px; margin-bottom: 4px; }
+
+			.results-row-question { // "results" title
+				display: block; // remove flex parentage
+				font-size: 27px;
+				text-align: left;
+				padding-top: 45px;
+			}
+
+			.results-row-result {
+
+				border-top: 20px solid transparent;
+
+				&.you, &.shared { border-top-color: $green; }
+				&.color-1 { border-top-color: $color1; }
+				&.color-2 { border-top-color: $color2; }
+				&.color-3 { border-top-color: $color3; }
+				&.color-4 { border-top-color: $color4; }
+				&.share-page-cta { border-top-color: $gray4; }
+			}
+		}
+
+		&.totals {
+			font-weight: bold;
+
+			.results-row-result {
+
+				&.you, &.shared { background-color: rgba($green, .2);}
+				&.color-1 { background-color: rgba($color1, .2);}
+				&.color-2 { background-color: rgba($color2, .2);}
+				&.color-3 { background-color: rgba($color3, .2);}
+				&.color-4 { background-color: rgba($color4, .2);}				
+				&.share-page-cta { background-color: rgba($white, .4);}
+			}
+		}
+	}
+
+	// SPECIAL CASE WITHIN RESULTS DISPLAY
+
+	&.shared-results {
+		.results-row-question {
+			@include flex-child(7,1,0%);
+		}
+
+		.results-row-result.shared {
+			@include flex-child(5,1,0%);	
+		}
+
+		.results-row-result.share-page-cta {
+			@include flex-child(3,1,0%);
+
+			.character-name {
+				padding-bottom: 10px;
+			}
+
+			.indicator-dot {
+				display: inline-block;
+				vertical-align: middle;
+				margin-top: -2px;
+				margin-right: 10px;
+
+				&.you {
+					background-color: $gray4;
+					color: $white;
+				}
+
+				&:last-of-type {
+					margin-right: 0px;
+				}
+			}
+		}
+	}
+}
+
+// here's where we're going to set up all the delays, et cetera
+// for the question answering phase
+
+// .bottom-content {
+// 	// @include animation-property(duration, 1s);
+// 	// @include animation-property(fill-mode, forwards !important);
+// }
+
+.slides-wrapper {
+
+	// fading in
+	&.transitioning {
+		@include animation-property(duration, .5s);
+	}
+
+	// fading out
+	&.on.transitioning {
+		@include animation-property(duration, .5s);
+	}
+}
+
+.info-bar {
+
+	// fading in
+	&.transitioning {
+		@include animation-property(duration, 1s);
+		@include animation-property(delay, .5s);
+	}
+
+	// fading out
+	&.on.transitioning {
+		@include animation-property(duration, 1s);
+		@include animation-property(delay, 2s);
+	}
+}
+
+.add-character {
+
+	.indicator {
+
+		// fading in
+		transition-duration: .8s;
+		transition-delay: .5s;
+		// &.transitioning {
+		// 	@include animation-property(duration, 1s);
+		// 	@include animation-property(delay, .5s);
+		// }
+	}
+}
+
+
+.some-other-step {
+
+	.indicator {
+
+		.indicator-bio {
+			
+			// fading in
+			&.transitioning {
+				@include animation-property(duration, 1s);
+			}
+
+			// fading out
+			&.on.transitioning {
+				@include animation-property(duration, 1s);
+			}			
+		}
+	}
+}
+
+.just-you {
+	.info-bar:not(.on).transitioning {
+		@include animation-property(delay, 0s);
+	}
+}
+
+.question-answer-step {
+	.indicator {
+		transition-duration: .5s;
+	}
+}

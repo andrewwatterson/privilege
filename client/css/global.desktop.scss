@@ -1,0 +1,200 @@
+@import 'global.common.scss';
+
+.wrapper {
+	@include flex-parent(flex-start);
+	height: 100%;
+	min-height: 100%;
+	max-height: 100%;
+}
+
+.header {
+	@include flex-parent(flex-start, stretch, row);
+	padding: 30px 65px;
+	
+	.wrapper:not(.results-display) & { padding-bottom: 0px; }
+}
+
+.logo {
+	@include ui-font();
+	font-size: 22px;
+	text-transform: uppercase;
+	text-align: left;
+	color: $green;
+	@include flex-child(1,1,0%);
+
+	.tld {
+		color: $gray4;
+	}
+}
+
+.learn-more {
+	@include ui-font();
+	color: $gray3;
+	cursor: pointer;
+
+	&:hover {
+		color: $green;
+		
+		.about-icon {
+			border-color: $green;
+		}
+	}
+
+	.learn-more-label {
+		display: inline-block;
+		vertical-align: middle;
+		font-size: 12px;
+		text-transform: uppercase;
+		margin-right: 3px;
+	}
+
+	.about-icon {
+		display: inline-block;
+		vertical-align: middle;
+
+		font-size: 10px;
+		text-transform: lowercase;
+		text-align: center;
+		line-height: 15px;
+
+		height: 15px;
+		width: 15px;
+		border-radius: 10px;
+		border: 2px solid $gray3;			
+	}
+}
+
+.about-box {
+	position: absolute;
+	z-index: 5;
+
+	background-color: rgba($lightGreen, 1);
+	padding: 20px 35px;
+	margin: 25px 30px 0px;
+
+	@include flex-parent(flex-start, stretch, row);
+
+	&.hidden { // so that we can remove this class and have it revert to flex
+		display: none;
+	}
+
+	&:before {
+		position: absolute;
+		height: 0px;
+		width: 0px;
+		content: " ";
+		top: -30px;
+		border: 15px solid transparent;
+		margin-right: 1px;
+		border-bottom-color: $lightGreen;
+		right: 35px;
+	}
+
+	.about-section {
+		text-align: left;
+		color: $darkGreen;
+
+		&:first-of-type {
+			padding-right: 25px;
+			border-right: 1px solid $green;
+			margin-right: 25px;
+		}
+
+		h3 {
+			margin: 0; padding: 0;
+			@include ui-font();
+			font-size: 16px;
+			text-transform: uppercase;
+			margin-bottom: 15px;
+		}
+
+		p {
+			margin: 0; padding: 0;
+			font-size: 12px;
+			line-height: 1.4;
+			margin-bottom: 12px;
+		}
+
+		a {
+			color: $green;
+			text-decoration: underline;
+		}
+	}
+
+	.about-section.privacy { @include flex-child(2,1,0%); }
+	.about-section.about { @include flex-child(1,1,0%); }
+}
+
+.quiz-wrapper {
+	@include flex-child(1,0,0%);
+	position: relative;
+}
+
+/********************************/
+/*        TITLE SLIDE           */
+/********************************/
+
+.title-slide {
+	max-width: 600px;
+
+	&.mobile { display: none; }
+	&.desktop { display: block; }
+
+	p { color: $gray4; }
+
+	p:last-of-type {
+		margin-bottom: 45px;
+	}
+}
+
+.avatars {
+
+	margin-bottom: 60px;
+
+	.avatar {
+		display: inline-block;
+		margin-right: 36px;
+
+		&:last-of-type {
+			margin-right: 0px;
+		}
+	}
+}
+
+$privilegeIsHeight: 28px;
+
+.chaser-wrapper {
+	@include ui-font();
+	font-size: 22px;
+	line-height: $privilegeIsHeight;
+
+	@include flex-parent(flex-start, stretch, row);
+
+	margin-bottom: 35px;
+
+	.chaser-fixed {
+		color: $gray4;
+		text-align: right;
+		margin-right: 10px;
+	}
+
+	.chaser-frame {
+		height: $privilegeIsHeight;
+		position: relative;
+		overflow: hidden;
+		border-bottom: 1px dotted $green;
+		@include flex-child(1,1,0%);
+
+		.chaser-inner {
+			text-align: left;
+			white-space: nowrap;
+			color: $green;
+			position: relative;
+			top: 0%;
+
+			transition-property: top;
+			transition-duration: .5s;
+			transition-timing-function: linear;
+		}
+	}
+}

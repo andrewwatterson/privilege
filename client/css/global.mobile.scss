@@ -1,0 +1,50 @@
+@import 'global.common.scss';
+
+@media only screen and (max-width : 800px) {
+
+.header {
+	display: none;
+}
+
+.slides-wrapper {
+	padding: 10px 0px;
+}
+
+.slide .title-slide {
+	&.mobile { display: block; }
+	&.desktop { display: none; }
+
+	.avatars {
+		width: 200%;
+		margin-left: -50%;
+		margin-top: 20px;
+		margin-bottom: 40px;
+
+		.avatar {
+			margin-right: 30px;
+
+			&:last-of-type {
+				margin-right: 0px;
+			}
+		}
+	}
+
+	.learn-more {
+		text-align: right;
+		padding: 0px 10px;
+	}
+
+	.logo {
+		text-align: center;
+	}
+
+	p {
+		text-align: center;
+		padding: 0px 30px;
+		margin-bottom: 30px;
+		line-height: 1.7;
+	}
+
+}
+
+}

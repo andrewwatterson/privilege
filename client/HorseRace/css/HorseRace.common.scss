@@ -1,0 +1,170 @@
+$darkGreen: #0B3623;
+$green: #22A66F;
+$lightGreen: #C4E6D7;
+
+$black: #000000;
+$gray5: #666666;
+$gray4: #999999;
+$gray3: #CCCCCC;
+$gray2: #E6E6E6;
+$gray1: #FAFAFA;
+$white: #FFFFFF;
+
+$lightYellow: #FFF9BF;
+$burntYellow: #805A1E;
+
+// blues
+$color1light: #99C3FF;
+$color1: #1F5199;
+$color1dark: #153666;
+
+// yellows
+$color2light: #FBD397;
+$color2: #FBB03B;
+$color2dark: #593F15;
+
+// reds
+$color3light: #D9ADAF;
+$color3: #990007;
+$color3dark: #400003;
+
+// purples
+$color4light: #B8A3CC;
+$color4: #400080;
+$color4dark: #2D0059;
+
+$questionBase: $white;
+$questionText: $darkGreen;
+$scaleBase: $gray1;
+$resultsBase: $gray3;
+
+$presentationWidth: 750px;
+
+$specialIndicatorMinHeight: 45px;
+$indicatorMinHeight: 35px;
+$indicatorMargin: 10px;
+
+@mixin flex-parent($justify: space-around, $align: stretch, $direction: column) {
+	display: flex;
+	flex-direction: $direction;
+	justify-content: $justify;
+	align-items: $align;
+	
+	display: -webkit-flex;
+	-webkit-flex-direction: $direction;
+	-webkit-justify-content: $justify;
+	-webkit-align-items: $align;
+}
+
+@mixin flex-child($grow, $shrink, $basis) {
+	flex: $grow $shrink $basis;
+	-webkit-flex: $grow $shrink $basis;
+}
+
+@mixin display-flex() { display: -webkit-flex; display: flex; }
+
+@mixin remove-flex() { flex: none; -webkit-flex: none; }
+
+@mixin text-font() {
+	font-family: "adelle", Georgia, sans-serif;
+}
+
+@mixin ui-font() {
+	font-family: "futura-pt", Futura, sans-serif;
+	font-weight: 700;
+}
+
+@mixin animation($name) {
+	animation-name: $name;
+	-webkit-animation-name: $name;
+}
+
+@mixin animation-property($property, $value) {
+	animation-#{$property}: $value;
+	-webkit-animation-#{$property}: $value;
+}
+
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+
+	@-moz-keyframes #{$name} {
+		@content;
+	}  
+
+	@-ms-keyframes #{$name} {
+		@content;
+	}
+
+	@-o-keyframes #{$name} {
+		@content;
+	}  
+
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+@include keyframes(info-bar-on) {
+	0% {
+		opacity: 0;
+		transform: translate(0%, 100%);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0%, 0%);
+	}
+}
+
+@include keyframes(info-bar-off) {
+	0% {
+		opacity: 1;
+		transform: translate(0%, 0%);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(0%, 100%);
+	}
+}
+
+@include keyframes(fade-in) {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@include keyframes(fade-out) {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@include keyframes(half-fade-in) {
+	0% { opacity: .5; }
+	100% { opacity: 1; }
+}
+
+@include keyframes(half-fade-out) {
+	0% { opacity: 1; }
+	100% { opacity: .5; }
+}
+
+@mixin indicator-dot($size) {
+	height: $size;
+	width: $size;
+	border-radius: ($size / 2);
+	background-size: $size $size;
+	background-repeat: no-repeat;
+
+	.indicators & {
+		top: 50%;
+		margin-top: -1 * ($size / 2);
+		margin-left: -1 * ($size / 2);		
+		position: absolute;
+	}
+
+	@include ui-font();
+	font-size: 12px;
+	text-transform: uppercase;
+	line-height: $size + 2;
+	text-align: center;
+}

@@ -1,0 +1,91 @@
+@import 'HorseRace.common.scss';
+
+@media only screen and (max-width : 800px) {
+
+	.slides-wrapper { padding: 0px; }
+
+	.slide {
+		padding: 15px 0px;
+		
+		.question-text {
+			font-size: 24px;
+		}
+	}
+
+	.button {
+		padding: 10px 24px;
+		margin-right: 0px;
+	}
+
+	.main-content {
+		min-height: 0px;
+		@include flex-child(6,0,0px);
+	}
+
+	.bottom-content.on {
+		@include flex-child(1,0,50px);
+	}
+
+	.scale {
+		background-color: $questionBase;
+
+		.scale-steps { display: none; }
+
+		.indicators {
+
+			&.mobile { @include display-flex(); }
+			&.desktop { display: none; }
+
+			@include flex-parent(space-around, flex-end, row);
+
+			.indicator {
+
+				display: inline-block;
+				overflow: visible;
+
+				&.on {
+					min-width: 60px;
+					@include flex-child(1,0,60px);
+				}
+
+				&.you {
+					.indicator-dot {
+						font-size: 10px;
+						background-color: $white;
+					}
+				}
+
+				.indicator-dot {
+					@include indicator-dot(40px);
+					top: auto;
+					left: 50%;
+					margin-top: -25px;
+					margin-left: -20px;
+				}
+			
+				&:not(.you) .indicator-dot {
+					box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,.05);
+				}
+			}
+
+		}
+	
+	}
+
+	.indicator-score {
+		height: 59px;
+		line-height: 59px;
+		padding-top: 6px;
+
+		font-size: 20px;
+		font-weight: bold;
+	
+		.you & { color: $darkGreen; background-color: $lightGreen; box-shadow: inset 0px -10px 0px 0px $green; }
+		.color-1 & { color: $color1dark; background-color: $color1light; box-shadow: inset 0px -10px 0px 0px $color1; }
+		.color-2 & { color: $color2dark; background-color: $color2light; box-shadow: inset 0px -10px 0px 0px $color2; }
+		.color-3 & { color: $color3dark; background-color: $color3light; box-shadow: inset 0px -10px 0px 0px $color3; }
+		.color-4 & { color: $color4dark; background-color: $color4light; box-shadow: inset 0px -10px 0px 0px $color4; }
+	
+	}
+
+}
