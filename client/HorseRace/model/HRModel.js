@@ -11,14 +11,14 @@ export default class HRModel {
 
 		this.askDbFor = new HRDatabase(props.db);
 
-		this.introQs = props.introQuestions,
-		this.characterAttributes,
-
-		this.questionLibrary = props.quizQuestions,
+		this.introQs = props.introQuestions;
+		this.questionLibrary = props.quizQuestions;
 		this.quizQuestionsLimit = props.quizQuestionsLimit;
-		this.quizQs = Array();
+		this.quizQs = this.pickQuestionsForQuiz();
+		this.questionSequence = Array();
 		this.setUpQuestions();
 
+		
 		this.totalRange = 0;
 		this.baselineScore = 0;
 		this.createScale();
@@ -27,31 +27,52 @@ export default class HRModel {
 
 		this.availableProfiles = this.askDbFor.availableProfiles();
 
-		this.currentQuestion = {stage: 'intro', index: 0};
+		//this.currentQuestion = {stage: 'intro', index: 0};
+		this.currentQuestion = 0;
 	}
 
 	getCharacterAttributes() {
-		return _.map(this.introQs, (value, index, collection) =>
-			{
-				return value.key;
-			}
-		);
+		return _.map(this.introQs, (value, index, collection) => {
+			return value.key;
+		});
+	}
+
+	isCharacterAttribute(key) {
+		return this.getCharacterAttributes().indexOf(key) !== -1;
 	}
 
 	setUpQuestions() {
 
-		//for()
-
-		this.pickQuestionsForQuiz();
+		this.questionSequence = _.concat(this.introQs, this.quizQs);
 	}
 
 	pickQuestionsForQuiz() {
 
-		this.quizQs = _
-			.chain(this.questionLibrary)
-			.shuffle()
-			.slice(0, this.quizQuestionLimit || _.size(this.questionLibrary))
-			.value();
+		return _.chain(this.questionLibrary)
+				.shuffle()
+				.slice(0, this.quizQuestionLimit || _.size(this.questionLibrary))
+				.value();
+	}
+
+	moveToNextQuestion() {
+		if(this.questionSequence.length < this.currentQuestion + 1) {
+			this.currentQuestion++;
+		} else {
+			// do something that triggers the quiz to be over
+		}
+	}
+
+	getQuestionObject() {
+
+		return this.questionSequence[this.currentQuestion];
+	}
+
+	recordAnswer(character, key, value) {
+		if(this.isCharacterAttribute(key)) {
+			this.characters[character].setAttribute(key, value);
+		} else {
+			this.characters[character].setAnswer(key, value);
+		}
 	}
 
 	// getQuestionObject() {
@@ -65,12 +86,25 @@ export default class HRModel {
 	// }
 
 	// moveToNextQuestion() {
-	// 	if(this.currentQuestion.stage === 'intro') {
-	// 		if(this.introQs.length < )
-	// 	} else if (this.currentQuestion.stage === 'quiz') {
 
+	// 	let nextIsInBounds = function(arr, curIndex) { return arr.length < curIndex + 1; }
+
+	// 	if(this.currentQuestion.stage === 'intro') {
+	// 		if(nextIsInBounds(this.introQs, this.currentQuestion.index)) {
+	// 			this.currentQuestion.index++;
+	// 		} else {
+	// 			this.currentQuestion = {stage: 'quiz', index: 0};
+	// 		}
+	// 	} else if (this.currentQuestion.stage === 'quiz') {
+	// 		if(nextIsInBounds(this.quizQs, this.currentQuestion.index)) {
+	// 			this.currentQuestion.index++;
+	// 		} else {
+	// 			// do something that triggers the quiz to be over				
+	// 		}
 	// 	}
 	// }
+
+
 
 	createScale() {
 

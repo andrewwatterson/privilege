@@ -83,7 +83,14 @@ class HRCharacterIndicator extends React.Component {
 								// var prettyAnswer = answerObj.verboseAnswer ? answerObj.verboseAnswer : answerObj.text;
 								let prettyAnswer = 'foo';
 
-								return(<div className={key}>{prettyAnswer}</div>);
+								return(
+									<div
+										className={key}
+										key={key}
+									>
+										{prettyAnswer}
+									</div>
+								);
 							})
 						}
 						</div>

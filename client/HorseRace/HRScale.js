@@ -54,8 +54,10 @@ class HRScale extends React.Component {
 		let indicators = this.renderIndicators();
 
 		return(
-			<div className="scale-wrapper"
-					onTransitionEnd={this.props.onTransitionEnd}>
+			<div 
+				className="scale-wrapper"
+				onAnimationEnd={this.props.onTransitionEnd}
+			>
 				<div className="scale">
 					<div className="scale-steps">
 						<div className="scale-step bumper"></div>

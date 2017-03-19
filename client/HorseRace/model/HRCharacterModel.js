@@ -48,27 +48,24 @@ class HRCharacterModel {
 		return this.questions[key];
 	}
 
-	recordAnswer(key, value) {
-
-		// if it's an attribute
-		if(Object.getPrototypeOf(this).propertyIsEnumerable(key)) {
-			this[key] = value;
-		} else {
-			this.questions[key] = value;
-		}
-
+	setAttribute(key, value) {
+		this.attributes[key] = value;
 	}
 
-	recordObjectOfAnswers(answersObj) {
-		// the answers are nested inside an object that has the profile as the key
-		for(profile in answersObj) {
-			var answers = answersObj[profile];
-
-			for(a in answers) {
-				this.recordAnswer(a, Math.round(answers[a].total / answers[a].n));
-			}
-		}
+	setQuestionAnswer(key, value) {
+		this.questions[key] = value;
 	}
+
+	// recordObjectOfAnswers(answersObj) {
+	// 	// the answers are nested inside an object that has the profile as the key
+	// 	for(profile in answersObj) {
+	// 		var answers = answersObj[profile];
+
+	// 		for(a in answers) {
+	// 			this.recordAnswer(a, Math.round(answers[a].total / answers[a].n));
+	// 		}
+	// 	}
+	// }
 }
 
 export default HRCharacterModel;

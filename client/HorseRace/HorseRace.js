@@ -28,12 +28,13 @@ export default class HorseRace extends React.Component {
 				quizQuestionsLimit: props.quizQuestionsLimit,
 				db: props.db
 			})
-
 		};
 
 		this.stages = {
 			'add-scale': {
 				scaleTransitionEnd: () => {
+
+					console.log('add-scale end');
 
 					let newModel = _.clone(this.state.model);
 					newModel.addCharacter('you');
@@ -45,6 +46,14 @@ export default class HorseRace extends React.Component {
 				}
 			},
 			'add-character': {
+				scaleTransitionEnd: () => {
+					console.log('add-character end');
+
+					this.setState({stage: 'intro-question'});
+				}
+			},
+			'intro-question': {
+
 			}
 		}
 
@@ -54,29 +63,36 @@ export default class HorseRace extends React.Component {
 		// });
 	}
 
-	answerQuestion(question, choice) {
+	answerQuestion(key, value) {
 
-		thisRace.scale.characters['you'].recordAnswer(question.key, answer.normalizedAnswer);		
+		let newModel = _.clone(this.state.model);
+		newModel.recordAnswer('you', key, value);
+
+		//thisRace.scale.characters['you'].recordAnswer(question.key, answer.normalizedAnswer);		
 		
-		for(c in thisRace.scale.characters) {
+		// for(c in thisRace.scale.characters) {
 
-			var theChar = thisRace.scale.characters[c];
+		// 	var theChar = thisRace.scale.characters[c];
 
-			// find the characters' answer in the question array
-			// add the scaleEffect to their score
-			var characterAnswer = HorseRace.Util.findObjectInArray(	question.choices,
-																	'normalizedAnswer',
-																	theChar.questions[question.key]
-																  );
-			if(characterAnswer) {
-				//console.log(c, 'has answer', characterAnswer.text, 'so moving scale', characterAnswer.scaleEffect)
-				theChar.currentScore += characterAnswer.scaleEffect;
-			}
-		}
+		// 	// find the characters' answer in the question array
+		// 	// add the scaleEffect to their score
+		// 	var characterAnswer = HorseRace.Util.findObjectInArray(	question.choices,
+		// 															'normalizedAnswer',
+		// 															theChar.questions[question.key]
+		// 														  );
+		// 	if(characterAnswer) {
+		// 		//console.log(c, 'has answer', characterAnswer.text, 'so moving scale', characterAnswer.scaleEffect)
+		// 		theChar.currentScore += characterAnswer.scaleEffect;
+		// 	}
+		// }
 
 		//thisRace.commitToDatabase();
 
-		callback.call(thisRace);
+		// callback.call(thisRace);
+	}
+
+	isQuestionShowing() {
+		return this.state.stage === 'intro-question';
 	}
 
 	render() {
@@ -96,12 +112,21 @@ export default class HorseRace extends React.Component {
 				{...hrH.appearTransitionOptions}
 			>
 				<div className="main-content">
-					<div className="slides-wrapper">
-						<HRQuestion
-							question={'bar'}
-							questionAnswerFunction={null}
-						/>
-					</div>
+					<ReactCSSTransitionGroup
+						component="div"
+						className="slides-wrapper"
+						{...hrH.enterTransitionOptions}
+					>
+						{
+							this.isQuestionShowing() &&
+
+							<HRQuestion
+								question={this.state.model.getQuestionObject()}
+								questionAnswerFunction={(key, value) => this.answerQuestion(key, value)}
+							/>
+						}
+
+					</ReactCSSTransitionGroup>
 					<HRInfoBar
 						content={'foo'}
 					/>

@@ -32,42 +32,25 @@
 	box-sizing: border-box;
 	padding: 25px;
 	min-height: 250px;
-
-	opacity: 0;
-
-	&.transitioning {
-		@include animation(fade-in);
-	}
-
-	&.to-half-fade {
-		@include animation(half-fade-in);
-	}
-
-	&.on {
-		opacity: 1;
-
-		&.transitioning {
-			@include animation(fade-out);
-		}
-	}
-
-	&.on.faded {
-		opacity: .5;
-
-		&.transitioning {
-			@include animation(half-fade-out);
-		}
-	}
 }
 
 .slide {
 	overflow: hidden;
 	box-sizing: border-box;
 	@include flex-parent(center, center);
-  	opacity: 1;
   	padding: 5px;
 
   	color: $questionText;
+
+	opacity: 1;
+  	
+	animation-name: fade-in;
+	animation-duration: 1s;
+	animation-timing-function: ease-in;
+
+	&.initial-state {
+		opacity: 0;
+	}
 
   	h1 {
 		font-size: 40px;
@@ -193,10 +176,9 @@
 	@include flex-child(2,1,0px);
 	opacity: 1;
 
-	transition-property: -webkit-flex opacity;
-  	transition-property: flex opacity;
-  	transition-duration: .5s;
-  	transition-timing-function: ease-in;
+	animation-name: fade-and-grow-to-flex-2;
+  	animation-duration: .5s;
+  	animation-timing-function: ease-in;
 
   	@include flex-parent();
 
@@ -392,9 +374,9 @@
 		position: relative;
 		overflow: hidden; // this is the frame
 
-		transition-property: -webkit-flex, opacity;
-  		transition-property: flex, opacity;
-  		transition-timing-function: ease-in;
+		animation-name: fade-and-grow-to-flex-1;
+	  	animation-duration: .8s;
+	  	animation-timing-function: ease-in;
 
 		&.initial-state {
 			@include flex-child(.0001,1,0%);
